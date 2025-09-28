@@ -1,0 +1,2 @@
+to serve files from this repository to another via absolut url 
+the repository must have github pages active 
