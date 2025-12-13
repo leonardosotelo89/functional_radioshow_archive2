@@ -49,7 +49,7 @@ button{
 <audio id="player" controls></audio>
 
 <script>
-for(i = 0;i < 3;i++){
+for(let i = 0;i < 3;i++){
   let div = document.createElement('div')
   document.body.appendChild(div)
   div.id = "div" + i
@@ -68,21 +68,25 @@ const cache = {}; // cache multidimensional
 const USER = "leonardosotelo89";
 const REPO = "functional_radioshow_archive2";
 
+const CACHE_KEY = `repoCache_${USER}_${REPO}`;
+
 const fm = document.getElementById("fm");
 const player = document.getElementById("player");
 
 const AUDIO_EXT = [".mp3", ".wav", ".ogg"];
 
 
-window.addEventListener("beforeunload", () => {
-  localStorage.setItem("repoCache", JSON.stringify(cache));
+
+window.addEventListener("beforeunload", () => { 
+ //localStorage.setItem("repoCache", JSON.stringify(cache));
+ localStorage.setItem(CACHE_KEY, JSON.stringify(cache));
 });
 
 window.onload = ()=>{
-const saved = localStorage.getItem("repoCache");
+//const saved = localStorage.getItem("repoCache");
+const saved = localStorage.getItem(CACHE_KEY);
 if (saved) Object.assign(cache, JSON.parse(saved));
 } 
-
 
 
 async function getDir(path = "") {
