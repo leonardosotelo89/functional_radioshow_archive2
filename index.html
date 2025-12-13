@@ -4,11 +4,23 @@
       body{
         background:rgb(0,50,50);
       }
+      a{
+      text-decoration:none;
+      font-size:16px ;
+      color:lime;
+      background-color:blue;
+      padding:5px ;
+     } 
     </style>
   </head>
   <body>
 <marquee><h1>leonardosotelo89</h1></marquee>
 <div id="div1" ></div>
+<br><br>
+<a href="audios list from github API 1.2 cache.html" >
+  audios file manager 
+</a>
+    
     <script>
 let mainaudio = new Audio() 
     function start() {
@@ -17,7 +29,7 @@ let mainaudio = new Audio()
       div1.innerHTML += mainaudio.src
      } 
 
-  document.onclick = start
+ // document.onclick = start
       
     </script>
   </body>
