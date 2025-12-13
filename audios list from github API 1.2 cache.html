@@ -1,0 +1,161 @@
+<html lang="en">
+  <head>
+<meta charset="UTF-8">
+<meta name="viewport" 
+content="width=device-width,
+         height=device-height, 
+         initial-scale=1.0">
+    <title></title>
+    <style>
+    *{margin:0px;padding:0px;box-sizing:border-box;} 
+body{
+  background:linear-gradient(to top, green, blue);
+  color: lime;
+  font-size: 20px ;
+  font-weight: bold ;
+               
+} 
+h2{
+  position: absolute ;
+  animation:colores 7s 1s linear infinite;
+  user-select: none ;
+}
+div{
+  display: grid;
+}
+button{
+  background-color: blue ;
+  color: white ;
+  font-size: 16px ;
+  padding:5px;
+}
+@keyframes colores{
+  from{
+   filter: hue-rotate(0deg);
+  }to{
+    filter: hue-rotate(360deg);
+  }
+}
+
+    </style>
+  </head>
+  
+  <body>
+    
+  <h2>javaScript = 'code'</h2>
+  
+  <br><br>
+<div id="fm"></div>
+<audio id="player" controls></audio>
+
+<script>
+for(i = 0;i < 3;i++){
+  let div = document.createElement('div')
+  document.body.appendChild(div)
+  div.id = "div" + i
+  //console.log(div.id); 
+}
+/*
+div0.innerHTML = 'div1'
+div1.innerHTML = 'div2'
+div2.innerHTML = 'div3'
+*/
+
+
+
+const cache = {}; // cache multidimensional
+
+const USER = "leonardosotelo89";
+const REPO = "functional_radioshow_archive2";
+
+const fm = document.getElementById("fm");
+const player = document.getElementById("player");
+
+const AUDIO_EXT = [".mp3", ".wav", ".ogg"];
+
+
+window.addEventListener("beforeunload", () => {
+  localStorage.setItem("repoCache", JSON.stringify(cache));
+});
+
+window.onload = ()=>{
+const saved = localStorage.getItem("repoCache");
+if (saved) Object.assign(cache, JSON.parse(saved));
+} 
+
+
+
+async function getDir(path = "") {
+  if (cache[path]) {
+    return cache[path]; // cache hit 💚
+  }
+
+  const url = `https://api.github.com/repos/${USER}/${REPO}/contents/${path}`;
+  const res = await fetch(url);
+  const data = await res.json();
+
+  const node = {
+    dirs: [],
+    files: []
+  };
+
+  data.forEach(item => {
+    if (item.type === "dir") {
+      node.dirs.push(item.name);
+    }
+
+    if (
+      item.type === "file" &&
+      AUDIO_EXT.some(ext => item.name.toLowerCase().endsWith(ext))
+    ) {
+      node.files.push({
+        name: item.name,
+        url: item.download_url
+      });
+    }
+  });
+
+  cache[path] = node;
+  return node;
+}
+
+
+async function loadDir(path = "") {
+  fm.innerHTML = "";
+
+  if (path) {
+    const back = document.createElement("div");
+    back.textContent = "⬅ ..";
+    back.onclick = () =>
+      loadDir(path.split("/").slice(0, -1).join("/"));
+    fm.appendChild(back);
+  }
+
+  const node = await getDir(path);
+
+  node.dirs.forEach(dir => {
+    const d = document.createElement("div");
+    d.textContent = "📁 " + dir;
+    d.onclick = () =>
+      loadDir(path ? `${path}/${dir}` : dir);
+    fm.appendChild(d);
+  });
+
+  node.files.forEach(file => {
+    const b = document.createElement("button");
+    b.textContent = "🎵 " + file.name;
+    b.onclick = () => {
+      player.pause();
+      player.src = file.url;
+      player.play();
+    };
+    fm.appendChild(b);
+  });
+}
+
+loadDir();
+</script> 
+<footer>              <!--              --></footer>
+
+</body>
+</html> 
