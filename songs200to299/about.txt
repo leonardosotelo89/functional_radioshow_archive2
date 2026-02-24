@@ -1,2 +1,13 @@
 to serve files from this repository to another via absolut url 
 the repository must have github pages active 
+
+to increase or decrease mp3 volume, 
+upload the original file to an online service like onlineConverter, 
+the resulting file must have 
+the same name and file extension in lowercase 
+then commit the file to the repository 
+and check if the original was replaced 
+you should see a now at last commit date 
+if you found both files 
+the original and the one with new volume 
+check your syntax 
