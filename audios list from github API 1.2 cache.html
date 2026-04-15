@@ -75,7 +75,7 @@ const player = document.getElementById("player");
 
 const AUDIO_EXT = [".mp3", ".wav", ".ogg"];
 
-
+let counter = 1
 
 window.addEventListener("beforeunload", () => { 
  //localStorage.setItem("repoCache", JSON.stringify(cache));
@@ -147,13 +147,14 @@ async function loadDir(path = "") {
 
   node.files.forEach(file => {
     const b = document.createElement("button");
-    b.textContent = "🎵 " + file.name;
+    b.textContent = "🎵 " + file.name + " " +counter;
     b.onclick = () => {
       player.pause();
       player.src = file.url;
       player.play();
     };
     fm.appendChild(b);
+    counter++
   });
 }
 
